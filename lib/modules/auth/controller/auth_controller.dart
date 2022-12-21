@@ -5,7 +5,7 @@ import 'package:reddit_clone/common/utils/utils.dart';
 import 'package:reddit_clone/models/user_model.dart';
 import 'package:reddit_clone/modules/auth/repository/auth_repository.dart';
 
-final userProvier = StateProvider<UserModel?>((ref) => null);
+final userProvider = StateProvider<UserModel?>((ref) => null);
 
 final authControllerProvider = StateNotifierProvider<AuthController, bool>(
   (ref) => AuthController(
@@ -46,7 +46,7 @@ class AuthController extends StateNotifier<bool> {
     user.fold(
       (l) => showSnackBar(context, l.message),
       (userModel) =>
-          _ref.read(userProvier.notifier).update((state) => userModel),
+          _ref.read(userProvider.notifier).update((state) => userModel),
     );
   }
 }

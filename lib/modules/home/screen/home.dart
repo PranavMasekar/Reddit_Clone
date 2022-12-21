@@ -1,15 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/modules/auth/controller/auth_controller.dart';
+import 'package:routemaster/routemaster.dart';
+
+import 'community_list_drawer.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
+  void displayDrawer(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvier);
+    final user = ref.watch(userProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+        centerTitle: false,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => displayDrawer(context),
+          );
+        }),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // showSearch(
+              //     context: context, delegate: SearchCommunityDelegate(ref));
+            },
+            icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              Routemaster.of(context).push('/add-post');
+            },
+            icon: const Icon(Icons.add),
+          ),
+          Builder(builder: (context) {
+            return IconButton(
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage(user!.profilePic),
+              ),
+              onPressed: () {},
+              // onPressed: () => displayEndDrawer(context),
+            );
+          }),
+        ],
+      ),
       body: Text(user!.uid),
+      drawer: CommunityListDrawer(),
     );
   }
 }
